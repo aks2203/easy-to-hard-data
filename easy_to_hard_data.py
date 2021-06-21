@@ -61,7 +61,7 @@ def makedirs(path):
 
 class ChessPuzzleDataset(Dataset):
     base_folder = "chess_data"
-    url = "file:///Users/avi/Downloads/Easy_to_Hard_Data/chess_data.tar.gz"
+    url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/chess_data.tar.gz"
 
     def __init__(self, root: str,
                  train: bool = True,
@@ -122,7 +122,7 @@ class MazeDataset(Dataset):
     padding and cropping is done correctly within this class for small and large mazes.
     """
     base_folder = "maze_data"
-    url = "file:///Users/avi/Downloads/Easy_to_Hard_Data/maze_data.tar.gz"
+    url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/maze_data.tar.gz"
     download_list = ["test_large", "test_small", "train_large", "train_small"]
 
     def __init__(self, root: str,
@@ -177,7 +177,7 @@ class MazeDataset(Dataset):
 
 class PrefixSumDataset(Dataset):
     base_folder = "prefix_sums_data"
-    url = "file:///Users/avi/Downloads/Easy_to_Hard_Data/prefix_sums_data.tar.gz"
+    url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/prefix_sums_data.tar.gz"
     lengths = [12, 14] + list(range(16, 65)) + [72] + [128]
     download_list = [f"len_{l}" for l in lengths]
 
