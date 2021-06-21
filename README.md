@@ -56,7 +56,7 @@ The `root` argument must be provided and determines where the data is or to wher
 ## Mazes
 
 <p align='center'>
-  <img width='34%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/mazes_example_input.png'/>
+  <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/mazes_example_input.png'/>
   <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/mazes_example_target.png'/>
 </p>
 
@@ -70,7 +70,7 @@ The `root` argument must be provided and determines where the data is or to wher
 ## Chess Puzzles
 
 <p align='center'>
-  <img width='34%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/chess_input_example.png'/>
+  <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/chess_input_example.png'/>
   <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/chess_target_example.png'/>
 </p>
 
