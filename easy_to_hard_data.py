@@ -1,3 +1,12 @@
+"""
+easy_to_hard_data.py
+Python package with datasets for studying generalization from
+    easy training data to hard test examples.
+Developed as part of easy-to-hard (github.com/aks2203/easy-to-hard).
+Avi Schwarzschild
+June 2021
+"""
+
 import errno
 import os
 import os.path

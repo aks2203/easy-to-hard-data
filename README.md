@@ -1,5 +1,5 @@
 # Easy-To-Hard Datasets
-Pytorch datasets for our [Easy-To-Hard](http://github.com/aks2203/easy-to-hard) project. 
+Pytorch datasets for our [Easy-To-Hard](http://github.com/aks2203/easy-to-hard) project.
 
 ## Overview
 
@@ -56,7 +56,7 @@ The `root` argument must be provided and determines where the data is or to wher
 ## Mazes
 
 <p align='center'>
-  <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/mazes_example_input.png'/>
+  <img width='38%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/mazes_example_input.png'/>
   <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/mazes_example_target.png'/>
 </p>
 
@@ -80,3 +80,33 @@ __init__(root: str, train: bool = True, idx_start: bool = None, idx_end: bool = 
 ```
 
 The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `idx_start` and `idx_end` aruments are an alternative to `train` and can be used to manually choose the indices in the sorted data to use. Finally, the `download` argument sets whether to download the data.
+
+## Example
+
+To make two prefix-sum dataloaders, one with training (32 bits) and one with testing (40 bits) data, we provide the following example.
+
+```
+from easy_to_hard_data import PrefixSumDataset
+imoprt torch.utils.data as data
+
+train_data = PrefixSumDataset("./data", num_bits=32, download=True)
+test_data = PrefixSumDataset("./data", num_bits=40, download=True)
+
+trainloader = data.DataLoader(train_data, batch_size=200, shuffle=True)
+testloader = data.DataLoader(test_data, batch_size=200, shuffle=False)
+```
+
+## Cite our work
+
+If you find this code helpful adn use these datasets, please consider citing our work.
+
+```
+@misc{schwarzschild2021learn,
+      title={Can You Learn an Algorithm? Generalizing from Easy to Hard Problems with Recurrent Networks}, 
+      author={Avi Schwarzschild and Eitan Borgnia and Arjun Gupta and Furong Huang and Uzi Vishkin and Micah Goldblum and Tom Goldstein},
+      year={2021},
+      eprint={2106.04537},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
