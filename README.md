@@ -87,7 +87,7 @@ To make two prefix-sum dataloaders, one with training (32 bits) and one with tes
 
 ```
 from easy_to_hard_data import PrefixSumDataset
-imoprt torch.utils.data as data
+import torch.utils.data as data
 
 train_data = PrefixSumDataset("./data", num_bits=32, download=True)
 test_data = PrefixSumDataset("./data", num_bits=40, download=True)
