@@ -16,7 +16,7 @@ print('version')
 print(__version__)
 
 setup(name='easy_to_hard_data',
-      version=__version__,
+      version="v0.1.1",
       description='Easy to Hard Data',
       url='https://aks2203.github.io/easy-to-hard-data',
       author='Avi Schwarzschild',
