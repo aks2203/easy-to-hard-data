@@ -107,7 +107,7 @@ testloader = data.DataLoader(test_data, batch_size=200, shuffle=False)
 
 ## Cite our work
 
-If you find this code helpful adn use these datasets, please consider citing our work.
+If you find this code helpful and use these datasets, please consider citing our work.
 
 ```
 @misc{schwarzschild2021learn,
