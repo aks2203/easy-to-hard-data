@@ -74,8 +74,8 @@ class ChessPuzzleDataset(Dataset):
 
     def __init__(self, root: str,
                  train: bool = True,
-                 idx_start: bool = None,
-                 idx_end: bool = None,
+                 idx_start: int = None,
+                 idx_end: int = None,
                  download: bool = True):
 
         self.root = root
