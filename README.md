@@ -49,7 +49,7 @@ The intended use for this package is to provide easy to use and ready to downloa
 </p>
 
 For each sequence length, we provide a set of 10,000 input/output pairs. The `__init__` method has the following signature:
-```__init__(self, root: str, num_bits: int = 32, download: bool = True)```
+```PrefixSumDataset(self, root: str, num_bits: int = 32, download: bool = True)```
 
 The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `num_bits` arument determines the length of the input sequences, and therefore the difficulty of the problem. The default value is 32, but the avaialable options are 16 through 64 as well as 72 and 128. Finally, the `download` argument sets whether to download the data.
 
@@ -62,7 +62,7 @@ The `root` argument must be provided and determines where the data is or to wher
 
 For each size (small and large), we provide a set of input/output pairs divided into training and testing sets with 50,000 and 10,000 elements, respectively. The `__init__` method has the following signature:
 ```
-__init__(self, root: str, train: bool = True, small: bool = True, download: bool = True)
+MazeDataset(self, root: str, train: bool = True, small: bool = True, download: bool = True)
 ```
 
 The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `small` arument sets the size (True for small, False for large). Finally, the `download` argument sets whether to download the data.
@@ -76,7 +76,7 @@ The `root` argument must be provided and determines where the data is or to wher
 
 We compiled a dataset from Lichess's puzzles database. We provide a set of about 1.5M input/output pairs sorted by dificulty rating. The `__init__` method has the following signature:
 ```
-__init__(root: str, train: bool = True, idx_start: bool = None, idx_end: bool = None, download: bool = True)
+ChessPuzzleDataset(root: str, train: bool = True, idx_start: int = None, idx_end: int = None, download: bool = True)
 ```
 
 The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `idx_start` and `idx_end` aruments are an alternative to `train` and can be used to manually choose the indices in the sorted data to use. Finally, the `download` argument sets whether to download the data.
