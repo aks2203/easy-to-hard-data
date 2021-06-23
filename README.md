@@ -3,7 +3,7 @@ Pytorch datasets for our [Easy-To-Hard](http://github.com/aks2203/easy-to-hard) 
 
 
 [![PyPI](https://img.shields.io/pypi/v/easy-to-hard-data)](https://pypi.org/project/easy-to-hard-data/)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/snap-stanford/ogb/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aks2203/easy-to-hard-data/blob/main/LICENSE)
 
 ## Overview
 
