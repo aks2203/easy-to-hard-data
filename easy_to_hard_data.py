@@ -157,7 +157,8 @@ class MazeDataset(Dataset):
         self.inputs = torch.from_numpy(inputs_np).float().permute(0, 3, 1, 2)
         self.targets = torch.from_numpy(targets_np).permute(0, 3, 1, 2)
 
-        self.pad = transforms.Pad(4 if small else 0)
+        self.padding = 4 if small else 0
+        self.pad = transforms.Pad(self.padding)
 
     def __getitem__(self, index):
         x = self.pad(self.inputs[index])
