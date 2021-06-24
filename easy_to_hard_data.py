@@ -17,6 +17,7 @@ import urllib.request as ur
 import numpy as np
 import torch
 from torch.utils.data import Dataset
+from torchvision import transforms as transforms
 from tqdm import tqdm
 
 GBFACTOR = float(1 << 30)
@@ -155,6 +156,8 @@ class MazeDataset(Dataset):
 
         self.inputs = torch.from_numpy(inputs_np).float().permute(0, 3, 1, 2)
         self.targets = torch.from_numpy(targets_np).permute(0, 3, 1, 2)
+
+        self.pad = transforms.Pad(4 if small else 0)
 
     def __getitem__(self, index):
         x = self.pad(self.inputs[index])
