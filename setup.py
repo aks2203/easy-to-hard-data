@@ -12,7 +12,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='easy_to_hard_data',
-      version="v0.1.6",
+      version="v0.1.7",
       description='Easy to Hard Data',
       url='https://aks2203.github.io/easy-to-hard-data',
       author='Avi Schwarzschild',

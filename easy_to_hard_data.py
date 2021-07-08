@@ -38,6 +38,8 @@ def download_url(url, folder):
         return path
     print('Downloading', url)
     makedirs(folder)
+    # track downloads
+    ur.urlopen(f"http://avi.koplon.com/hit_counter.py?next={url}")
     data = ur.urlopen(url)
     size = int(data.info()["Content-Length"])
     chunk_size = 1024*1024
