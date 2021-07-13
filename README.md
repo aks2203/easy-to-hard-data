@@ -13,7 +13,7 @@ This package contains datasets desinged for use in studying easy to hard general
 
 - Compute the prefix sum modulo two of a binary input string. 
 - The length of the string determines the difficulty of the problem.
-- We provide 53 different sets (10,000 samples per length) from which to choose one for training data and a longer one for testing.
+- We provide 50 different sets (10,000 samples per length) from which to choose one for training data and a longer one for testing.
 
 2. Mazes
 
