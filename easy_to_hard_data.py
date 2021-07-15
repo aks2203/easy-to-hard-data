@@ -1,23 +1,21 @@
-"""
-easy_to_hard_data.py
-Python package with datasets for studying generalization from
-    easy training data to hard test examples.
-Developed as part of easy-to-hard (github.com/aks2203/easy-to-hard).
-Avi Schwarzschild
-June 2021
+""" easy_to_hard_data.py
+    Python package with datasets for studying generalization from
+        easy training data to hard test examples.
+    Developed as part of easy-to-hard (github.com/aks2203/easy-to-hard).
+    Avi Schwarzschild
+    June 2021
 """
 
 import errno
 import os
 import os.path
-import random
 import tarfile
 import urllib.request as ur
+from typing import Optional, Callable
 
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-from torchvision import transforms as transforms
 from tqdm import tqdm
 
 GBFACTOR = float(1 << 30)
@@ -133,59 +131,60 @@ class MazeDataset(Dataset):
     """This is a dataset class for mazes.
     padding and cropping is done correctly within this class for small and large mazes.
     """
-    base_folder = "maze_data"
-    url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/maze_data.tar.gz"
-    download_list = ["test_large", "test_small", "train_large", "train_small"]
 
-    def __init__(self, root: str,
+    def __init__(self,
+                 root: str,
                  train: bool = True,
-                 small: bool = True,
+                 size: int = 9,
+                 transform: Optional[Callable] = None,
                  download: bool = True):
 
-        self.train = train
-        self.small = small
         self.root = root
+        self.train = train
+        self.size = size
+        self.transform = transform
+
+        self.folder_name = f"maze_data_{'train' if self.train else 'test'}_{size}"
+        url = f"https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/" \
+              f"maze_data_{self.folder_name}.tar.gz"
 
         if download:
-            self.download()
+            self.download(url)
 
-        folder_name = self.download_list[int(self.small) + 2 * int(self.train)]
-
-        inputs_path = os.path.join(root, self.base_folder, folder_name, "inputs.npy")
-        solutions_path = os.path.join(root, self.base_folder, folder_name, "solutions.npy")
+        inputs_path = os.path.join(root, self.folder_name, "inputs.npy")
+        solutions_path = os.path.join(root, self.folder_name, "solutions.npy")
         inputs_np = np.load(inputs_path)
         targets_np = np.load(solutions_path)
 
-        self.inputs = torch.from_numpy(inputs_np).float().permute(0, 3, 1, 2)
-        self.targets = torch.from_numpy(targets_np).permute(0, 3, 1, 2)
-
-        self.padding = 4 if small else 0
-        self.pad = transforms.Pad(self.padding)
+        self.inputs = torch.from_numpy(inputs_np).float()
+        self.targets = torch.from_numpy(targets_np)
 
     def __getitem__(self, index):
-        x = self.pad(self.inputs[index])
-        y = self.pad(self.targets[index])
-        i = random.randint(0, 2*self.padding)
-        j = random.randint(0, 2*self.padding)
+        img, target = self.inputs[index], self.targets[index]
 
-        return x[:, i:i+32, j:j+32], y[:, i:i+32, j:j+32]
+        if self.transform is not None:
+            stacked = torch.cat([img, target.unsqueeze(0)], dim=0)
+            stacked = self.transform(stacked)
+            img = stacked[:3]
+            target = stacked[3]
+
+        return img, target
 
     def __len__(self):
         return self.inputs.size(0)
 
     def _check_integrity(self) -> bool:
         root = self.root
-        for fentry in self.download_list:
-            fpath = os.path.join(root, self.base_folder, fentry)
-            if not os.path.exists(fpath):
-                return False
+        fpath = os.path.join(root, self.folder_name)
+        if not os.path.exists(fpath):
+            return False
         return True
 
-    def download(self) -> None:
+    def download(self, url) -> None:
         if self._check_integrity():
             print('Files already downloaded and verified')
             return
-        path = download_url(self.url, self.root)
+        path = download_url(url, self.root)
         extract_zip(path, self.root)
         os.unlink(path)
 
@@ -193,7 +192,7 @@ class MazeDataset(Dataset):
 class PrefixSumDataset(Dataset):
     base_folder = "prefix_sums_data"
     url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/prefix_sums_data.tar.gz"
-    lengths = [12, 14] + list(range(16, 65)) + [72] + [128]
+    lengths = list(range(16, 65)) + [72] + [128] + [256] + [512]
     download_list = [f"len_{l}" for l in lengths]
 
     def __init__(self, root: str, num_bits: int = 32, download: bool = True):

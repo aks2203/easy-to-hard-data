@@ -17,13 +17,15 @@ This package contains datasets desinged for use in studying easy to hard general
 
 2. Mazes
 
-- Visually solve a maze where the input is a 32 x 32 three channel image, and the output is a binary segmentation mask separating pixels that is the same size as the input with ones at locations that are on the optimal path and zeros elsewhere.
-- We provide small and large mazes, which are easy and hard, respectively. 
+- Visually solve a maze where the input is a three channel image, and the output is a binary segmentation mask separating pixels that is the same size as the input with ones at locations that are on the optimal path and zeros elsewhere.
+- We provide many size mazes (see below for details).
 
 3. Chess Puzzles
 - Choose the best next move given a mid-game chess board.
 - The difficulty is determined by the [Lichess](https://lichess.org/training) puzzle rating.
 - We sorted the chess puzzles provided by Lichess, and the first 600,000 easiest puzzles make up an easy training set. Testing can be done with any subset of puzzles with higher indices. The default test set uses indices 600,000 to 700,000.
+
+Note that in this repository there are two scripts to make data for prefix sums and for mazes. Also, we include plotting code for mazes and for chess puzzles.
 
 # Installation
 
@@ -67,13 +69,13 @@ The `root` argument must be provided and determines where the data is or to wher
   <img width='40%' src='https://aks2203.github.io/easy-to-hard-data/mazes_example_target.png'/>
 </p>
 
-For each size (small and large), we provide a set of input/output pairs divided into training and testing sets with 50,000 and 10,000 elements, respectively. The `__init__` method has the following signature:
+For sizes in {9, 11, 13, 15, 17} we have 50,000 training examples and 10,000 testing examples. For the larger sizes {19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 59}, we provide 10,000 mazes each. The `__init__` method has the following signature:
 
 ```
-MazeDataset(self, root: str, train: bool = True, small: bool = True, download: bool = True)
+MazeDataset(self, root: str, train: bool = True, size: int = 9, transform: Optional[Callable] = None, download: bool = True)
 ```
 
-The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `small` arument sets the size (True for small, False for large). Finally, the `download` argument sets whether to download the data.
+The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `size` arument sets the size (one of the integers listed above). The `transform` argument allows you to pass in a torchvision transform like random cropping. Finally, the `download` argument sets whether to download the data.
 
 ## Chess Puzzles
 
@@ -104,6 +106,10 @@ test_data = PrefixSumDataset("./data", num_bits=40, download=True)
 trainloader = data.DataLoader(train_data, batch_size=200, shuffle=True)
 testloader = data.DataLoader(test_data, batch_size=200, shuffle=False)
 ```
+
+## Contributing
+
+If you have improvements or find bugs, feel free to open issues.
 
 ## Cite our work
 
