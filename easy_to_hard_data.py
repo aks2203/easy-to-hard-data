@@ -71,7 +71,7 @@ def makedirs(path):
 
 class ChessPuzzleDataset(Dataset):
     base_folder = "chess_data"
-    url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/chess_data.tar.gz"
+    url = "file:///cmlscratch/avi1/eth_data/chess_data.tar.gz"
 
     def __init__(self, root: str,
                  train: bool = True,
@@ -145,8 +145,8 @@ class MazeDataset(Dataset):
         self.transform = transform
 
         self.folder_name = f"maze_data_{'train' if self.train else 'test'}_{size}"
-        url = f"https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/" \
-              f"maze_data_{self.folder_name}.tar.gz"
+        url = f"file:///cmlscratch/avi1/eth_data/" \
+              f"{self.folder_name}.tar.gz"
 
         if download:
             self.download(url)
@@ -191,7 +191,7 @@ class MazeDataset(Dataset):
 
 class PrefixSumDataset(Dataset):
     base_folder = "prefix_sums_data"
-    url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/prefix_sums_data.tar.gz"
+    url = "file:///cmlscratch/avi1/eth_data/prefix_sums_data.tar.gz"
     lengths = list(range(16, 65)) + [72] + [128] + [256] + [512]
     download_list = [f"len_{l}" for l in lengths]
 
