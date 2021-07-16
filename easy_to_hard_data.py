@@ -162,7 +162,7 @@ class MazeDataset(Dataset):
         targets_np = np.load(solutions_path)
 
         self.inputs = torch.from_numpy(inputs_np).float()
-        self.targets = torch.from_numpy(targets_np)
+        self.targets = torch.from_numpy(targets_np).long()
 
     def __getitem__(self, index):
         img, target = self.inputs[index], self.targets[index]
@@ -170,8 +170,8 @@ class MazeDataset(Dataset):
         if self.transform is not None:
             stacked = torch.cat([img, target.unsqueeze(0)], dim=0)
             stacked = self.transform(stacked)
-            img = stacked[:3]
-            target = stacked[3]
+            img = stacked[:3].float()
+            target = stacked[3].long()
 
         return img, target
 
