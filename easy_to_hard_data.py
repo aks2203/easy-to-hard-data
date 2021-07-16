@@ -77,9 +77,11 @@ class ChessPuzzleDataset(Dataset):
                  train: bool = True,
                  idx_start: int = None,
                  idx_end: int = None,
+                 who_moves: bool = True,
                  download: bool = True):
 
         self.root = root
+        self.ret_who_moves = who_moves
 
         if download:
             self.download()
@@ -106,7 +108,10 @@ class ChessPuzzleDataset(Dataset):
         self.who_moves = torch.load(who_moves)[idx_start:idx_end]
 
     def __getitem__(self, index):
-        return self.puzzles[index], self.targets[index], self.who_moves[index]
+        if self.ret_who_moves:
+            return self.puzzles[index], self.targets[index], self.who_moves[index]
+        else:
+            return self.puzzles[index], self.targets[index]
 
     def __len__(self):
         return self.puzzles.size(0)
