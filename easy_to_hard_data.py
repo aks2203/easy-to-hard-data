@@ -198,7 +198,7 @@ class PrefixSumDataset(Dataset):
     base_folder = "prefix_sums_data"
     url = "file:///cmlscratch/avi1/eth_data/prefix_sums_data.tar.gz"
     lengths = list(range(16, 65)) + [72] + [128] + [256] + [512]
-    download_list = [f"len_{l}" for l in lengths]
+    download_list = [f"{l}_data.pth" for l in lengths] + [f"{l}_targets.pth" for l in lengths]
 
     def __init__(self, root: str, num_bits: int = 32, download: bool = True):
 
@@ -209,9 +209,8 @@ class PrefixSumDataset(Dataset):
 
         print(f"Loading data with {num_bits} bits.")
 
-        folder_name = f"len_{num_bits}"
-        inputs_path = os.path.join(root, self.base_folder, folder_name, f"{num_bits}_data.pth")
-        targets_path = os.path.join(root, self.base_folder, folder_name, f"{num_bits}_targets.pth")
+        inputs_path = os.path.join(root, self.base_folder, f"{num_bits}_data.pth")
+        targets_path = os.path.join(root, self.base_folder, f"{num_bits}_targets.pth")
         self.inputs = torch.load(inputs_path).unsqueeze(1) - 0.5
         self.targets = torch.load(targets_path).long()
 
