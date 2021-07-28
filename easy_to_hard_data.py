@@ -77,9 +77,11 @@ class ChessPuzzleDataset(Dataset):
                  train: bool = True,
                  idx_start: int = None,
                  idx_end: int = None,
+                 who_moves: bool = True,
                  download: bool = True):
 
         self.root = root
+        self.ret_who_moves = who_moves
 
         if download:
             self.download()
@@ -106,7 +108,10 @@ class ChessPuzzleDataset(Dataset):
         self.who_moves = torch.load(who_moves)[idx_start:idx_end]
 
     def __getitem__(self, index):
-        return self.puzzles[index], self.targets[index], self.who_moves[index]
+        if self.ret_who_moves:
+            return self.puzzles[index], self.targets[index], self.who_moves[index]
+        else:
+            return self.puzzles[index], self.targets[index]
 
     def __len__(self):
         return self.puzzles.size(0)
@@ -157,7 +162,7 @@ class MazeDataset(Dataset):
         targets_np = np.load(solutions_path)
 
         self.inputs = torch.from_numpy(inputs_np).float()
-        self.targets = torch.from_numpy(targets_np)
+        self.targets = torch.from_numpy(targets_np).long()
 
     def __getitem__(self, index):
         img, target = self.inputs[index], self.targets[index]
@@ -165,8 +170,8 @@ class MazeDataset(Dataset):
         if self.transform is not None:
             stacked = torch.cat([img, target.unsqueeze(0)], dim=0)
             stacked = self.transform(stacked)
-            img = stacked[:3]
-            target = stacked[3]
+            img = stacked[:3].float()
+            target = stacked[3].long()
 
         return img, target
 
@@ -193,7 +198,7 @@ class PrefixSumDataset(Dataset):
     base_folder = "prefix_sums_data"
     url = "file:///cmlscratch/avi1/eth_data/prefix_sums_data.tar.gz"
     lengths = list(range(16, 65)) + [72] + [128] + [256] + [512]
-    download_list = [f"len_{l}" for l in lengths]
+    download_list = [f"{l}_data.pth" for l in lengths] + [f"{l}_targets.pth" for l in lengths]
 
     def __init__(self, root: str, num_bits: int = 32, download: bool = True):
 
@@ -204,9 +209,8 @@ class PrefixSumDataset(Dataset):
 
         print(f"Loading data with {num_bits} bits.")
 
-        folder_name = f"len_{num_bits}"
-        inputs_path = os.path.join(root, self.base_folder, folder_name, f"{num_bits}_data.pth")
-        targets_path = os.path.join(root, self.base_folder, folder_name, f"{num_bits}_targets.pth")
+        inputs_path = os.path.join(root, self.base_folder, f"{num_bits}_data.pth")
+        targets_path = os.path.join(root, self.base_folder, f"{num_bits}_targets.pth")
         self.inputs = torch.load(inputs_path).unsqueeze(1) - 0.5
         self.targets = torch.load(targets_path).long()
 
