@@ -13,7 +13,7 @@ This package contains datasets desinged for use in studying easy to hard general
 
 - Compute the prefix sum modulo two of a binary input string. 
 - The length of the string determines the difficulty of the problem.
-- We provide 53 different sets (10,000 samples per length) from which to choose one for training data and a longer one for testing.
+- We provide 52 different sets (10,000 samples per length) from which to choose one for training data and a longer one for testing.
 
 2. Mazes
 
@@ -60,7 +60,7 @@ For each sequence length, we provide a set of 10,000 input/output pairs. The `__
 PrefixSumDataset(self, root: str, num_bits: int = 32, download: bool = True)
 ```
 
-The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `num_bits` arument determines the length of the input sequences, and therefore the difficulty of the problem. The default value is 32, but the avaialable options are 16 through 64 as well as 72 and 128. Finally, the `download` argument sets whether to download the data.
+The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `num_bits` arument determines the length of the input sequences, and therefore the difficulty of the problem. The default value is 32, but the avaialable options are 16 through 64 as well as 72, 128, 256, and 512. Finally, the `download` argument sets whether to download the data.
 
 ## Mazes
 
@@ -69,7 +69,7 @@ The `root` argument must be provided and determines where the data is or to wher
   <img width='40%' src='https://aks2203.github.io/easy-to-hard-data/mazes_example_target.png'/>
 </p>
 
-For sizes in {9, 11, 13, 15, 17} we have 50,000 training examples and 10,000 testing examples. For the larger sizes {19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 59}, we provide 10,000 mazes each. The `__init__` method has the following signature:
+For sizes in {9, 11, 13, 15, 17} we have 50,000 training examples and 10,000 testing examples. For the larger sizes {19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 59}, we provide 1,000 mazes each. The `__init__` method has the following signature:
 
 ```
 MazeDataset(self, root: str, train: bool = True, size: int = 9, transform: Optional[Callable] = None, download: bool = True)
@@ -111,7 +111,7 @@ testloader = data.DataLoader(test_data, batch_size=200, shuffle=False)
 
 If you have improvements or find bugs, feel free to open issues.
 
-## Cite our work
+## Citing Our Work
 
 If you find this code helpful and use these datasets, please consider citing our work.
 
