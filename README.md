@@ -69,7 +69,7 @@ The `root` argument must be provided and determines where the data is or to wher
   <img width='40%' src='https://aks2203.github.io/easy-to-hard-data/mazes_example_target.png'/>
 </p>
 
-For sizes in {9, 11, 13, 15, 17} we have 50,000 training examples and 10,000 testing examples. For the larger sizes {19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 59}, we provide 1,000 mazes each. The `__init__` method has the following signature:
+For sizes in {9, 11, 13, 15, 17} we have 50,000 training examples and 10,000 testing examples. For the larger sizes {19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 59}, we provide 1,000 testing mazes each. The `__init__` method has the following signature:
 
 ```
 MazeDataset(self, root: str, train: bool = True, size: int = 9, transform: Optional[Callable] = None, download: bool = True)
