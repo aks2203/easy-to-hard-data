@@ -80,7 +80,7 @@ def plot_chess_puzzle(inputs, targets, who_moves, save_str):
     dim = inputs.size(2)
     fig, ax = plt.subplots(1, 1, figsize=(5, 5))
 
-    sns.heatmap(targets.reshape(dim, dim), ax=ax, cbar=False, linewidths=1, linecolor='white')
+    sns.heatmap(targets.reshape(dim, dim).flip(0), ax=ax, cbar=False, linewidths=1, linecolor='white')
     ax.spines['left'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.set_yticks([])
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     inputs, targets = mazes[0]
     plot_maze(inputs, targets, "maze_example.pdf")
 
-    chess_puzzles = ChessPuzzleDataset("./data")
-    inputs, targets, who_moves = chess_puzzles[0]
+    chess_puzzles = ChessPuzzleDataset("./data", idx_start=0, idx_end=4)
+    inputs, targets, who_moves = chess_puzzles[1]
     plot_chess_puzzle(inputs, targets, who_moves, "chess_example.pdf")
 

@@ -104,7 +104,7 @@ class ChessPuzzleDataset(Dataset):
         who_moves = os.path.join(root, self.base_folder, "who_moves.pth")
 
         self.puzzles = torch.load(inputs_path)[idx_start:idx_end]
-        self.targets = torch.load(solutions_path)[idx_start:idx_end]
+        self.targets = torch.load(solutions_path)[idx_start:idx_end].flip(1)
         self.who_moves = torch.load(who_moves)[idx_start:idx_end]
 
     def __getitem__(self, index):
