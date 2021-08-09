@@ -87,18 +87,17 @@ class Maze:
     def write_np(self):
         """Write an SVG image of the maze to filename."""
         beta = 2
-        my_numpy_array = np.ones((beta*(self.ny) + 1, beta*(self.nx) + 1))
+        my_numpy_array = np.zeros((beta*(self.ny) + 1, beta*(self.nx) + 1))
         # Draw the "South" and "East" walls of each cell, if present (these
         # are the "North" and "West" walls of a neighbouring cell in
         # general, of course).
         for x in range(self.nx):
             for y in range(self.ny):
-                if self.cell_at(x, y).walls['S']:
-                    my_numpy_array[beta*(y + 1), beta*(x): beta*(x + 1)] = 0
-                if self.cell_at(x, y).walls['E']:
-                    my_numpy_array[beta*(y) : beta*(y + 1), beta*(x + 1)] = 0
-                if self.cell_at(x, y).walls['S'] and self.cell_at(x, y).walls['E']:
-                    my_numpy_array[beta*(y + 1), beta*(x + 1)] = 0
+                my_numpy_array[beta*(y) + 1, beta*(x) + 1] = 1
+                if not (self.cell_at(x, y).walls['S']):
+                    my_numpy_array[beta*(y + 1), beta*(x) + 1] = 1
+                if not (self.cell_at(x, y).walls['E']):
+                    my_numpy_array[beta*(y) + 1, beta*(x + 1)] = 1
         # Draw the North and West maze border, which won't have been drawn
         # by the procedure above.
         my_numpy_array[0, :] = 0
