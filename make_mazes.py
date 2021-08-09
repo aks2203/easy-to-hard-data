@@ -87,21 +87,18 @@ class Maze:
     def write_np(self):
         """Write an SVG image of the maze to filename."""
         beta = 2
-        my_numpy_array = np.zeros((beta*(self.ny) + 1, beta*(self.nx) + 1))
-        # Draw the "South" and "East" walls of each cell, if present (these
-        # are the "North" and "West" walls of a neighbouring cell in
-        # general, of course).
+        my_numpy_array = np.zeros((beta * (self.ny) + 1, beta * (self.nx) + 1))
+        # Make all the nodes white and make the edges
+        # connecting these nodes as white
+        # according to the graph
         for x in range(self.nx):
             for y in range(self.ny):
-                my_numpy_array[beta*(y) + 1, beta*(x) + 1] = 1
+                my_numpy_array[beta * (y) + 1, beta * (x) + 1] = 1
                 if not (self.cell_at(x, y).walls['S']):
-                    my_numpy_array[beta*(y + 1), beta*(x) + 1] = 1
+                    my_numpy_array[beta * (y + 1), beta * (x) + 1] = 1
                 if not (self.cell_at(x, y).walls['E']):
-                    my_numpy_array[beta*(y) + 1, beta*(x + 1)] = 1
-        # Draw the North and West maze border, which won't have been drawn
-        # by the procedure above.
-        my_numpy_array[0, :] = 0
-        my_numpy_array[:, 0] = 0
+                    my_numpy_array[beta * (y) + 1, beta * (x + 1)] = 1
+
         return np.dstack([my_numpy_array, my_numpy_array, my_numpy_array])
 
     def find_valid_neighbours(self, cell):
