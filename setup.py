@@ -22,7 +22,7 @@ setup(name="easy_to_hard_data",
       py_modules=["easy_to_hard_data", "easy_to_hard_plot"],
       python_requires=">=3.7",
       install_requires=[
-        "chess==1.6.1"
+        "chess==1.6.1",
         "numpy>=1.18.5",
         "torch>=1.7.0",
         "torchvision>=0.8.2",
