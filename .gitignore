@@ -4,6 +4,9 @@
 *.pdf
 junk*
 *.pth
+deepthinking_lichess.tar.gz
+deepthinking_lichess.csv
+data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
