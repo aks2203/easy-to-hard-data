@@ -4,6 +4,7 @@
     Avi Schwarzschild
     July 2021
 """
+
 import os
 
 import chess.svg
@@ -11,12 +12,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from reportlab.graphics import renderPDF
 from svglib.svglib import svg2rlg
+import torch
 
 from easy_to_hard_data import MazeDataset, ChessPuzzleDataset
 
 
-def char_from_piece_vec(piece, who_moves=None):
-    chars = "oKQBNRPkqbnrp" if who_moves else "okqbnrpKQBNRP"
+def char_from_piece_vec(piece, who_moves):
+    chars = "oKQBNRPkqbnrp" if who_moves == 0 else "okqbnrpKQBNRP"
     idx = (piece == 1).nonzero(as_tuple=False)
     if len(idx) > 0:
         idx = idx.item() + 1
@@ -26,11 +28,15 @@ def char_from_piece_vec(piece, who_moves=None):
 
 
 def chess_board_to_str(board_tensor, who_moves):
+    """ function to move from 12x8x8 tensor to FEN representation
+    Note: The rows and cols in the tensor correspond to ranks and files
+          in the same order, i.e. first row is Rank 1, first col is File A."""
+
     board_tensor = board_tensor.squeeze()
     board_list = []
-    for i in range(8):
+    for i in range(7, -1, -1):
         for j in range(8):
-            piece = board_tensor[:, 7-i, j]
+            piece = board_tensor[:, i, j]
             board_list.append(char_from_piece_vec(piece, who_moves))
         board_list.append("/")
     board_list = board_list[:-1]
@@ -71,6 +77,7 @@ def plot_maze(inputs, targets, save_str):
     ax.set_xticks([])
 
     plt.tight_layout()
+    # plt.show()
     plt.savefig(save_str, bbox_inches="tight")
     plt.close()
 
@@ -80,18 +87,24 @@ def plot_chess_puzzle(inputs, targets, who_moves, save_str):
     dim = inputs.size(2)
     fig, ax = plt.subplots(1, 1, figsize=(5, 5))
 
-    sns.heatmap(targets.reshape(dim, dim).flip(0), ax=ax, cbar=False, linewidths=1, linecolor='white')
+    # We rotate targets here since the data comes in oriented with square A1 at
+    # the bottom left of the board, so we reorient the targets to match the rotated
+    # board if black is to move.
+    if who_moves:
+        targets = torch.rot90(targets, 2, [0, 1])
+
+    sns.heatmap(targets.reshape(dim, dim), ax=ax, cbar=False, linewidths=1, linecolor='white')
     ax.spines['left'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.set_yticks([])
     ax.set_xticks([])
-
     plt.savefig(f"target_{save_str}")
     plt.close()
 
     board_str = chess_board_to_str(inputs, who_moves)
+    print(board_str)
     board = chess.Board(board_str)
-    mysvg = chess.svg.board(board, size=350)
+    mysvg = chess.svg.board(board, size=350, flipped=bool(who_moves))
 
     tmp_str = ".easy_to_hard_data_plot_temp.svg"
     with open(tmp_str, "w") as fh:
@@ -102,7 +115,7 @@ def plot_chess_puzzle(inputs, targets, who_moves, save_str):
     os.remove(tmp_str)
 
 
-if __name__ == "__main__":
+def main():
     import torchvision.transforms as trans
     t = trans.RandomCrop(32, padding=8)
     mazes = MazeDataset("./data", transform=t)
@@ -110,6 +123,9 @@ if __name__ == "__main__":
     plot_maze(inputs, targets, "maze_example.pdf")
 
     chess_puzzles = ChessPuzzleDataset("./data", idx_start=0, idx_end=4)
-    inputs, targets, who_moves = chess_puzzles[1]
-    plot_chess_puzzle(inputs, targets, who_moves, "chess_example.pdf")
+    inputs, targets, who_moves = chess_puzzles[0]
+    plot_chess_puzzle(inputs, targets, who_moves, f"chess_example.pdf")
 
+
+if __name__ == "__main__":
+    main()

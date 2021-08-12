@@ -90,7 +90,7 @@ We compiled a dataset from Lichess's puzzles database. We provide a set of about
 ChessPuzzleDataset(root: str, train: bool = True, idx_start: int = None, idx_end: int = None, who_moves: bool = True, download: bool = True)
 ```
 
-The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `idx_start` and `idx_end` aruments are an alternative to `train` and can be used to manually choose the indices in the sorted data to use. The `who_moves` argument returns a boolean, where True indicates it's white's turn to move, and False indicates it's black's turn. Finally, the `download` argument sets whether to download the data.
+The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `idx_start` and `idx_end` aruments are an alternative to `train` and can be used to manually choose the indices in the sorted data to use. The `who_moves` argument returns a boolean, where True indicates that black moves next, and False indicates that white moves next. Finally, the `download` argument sets whether to download the data.
 
 ## Example
 

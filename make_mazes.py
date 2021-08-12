@@ -331,15 +331,15 @@ def gen_dataset(num_images=60000, maze_size=7):
 
 
 if __name__ == "__main__":
-    num_mazes = 10000
+    num_mazes = 5
     size = 9
-    data_name = f"maze_data_test_{size}"
-
+    # for size in range(9, 18, 2):
+    data_name = f"data/maze_data_train_{size}"
     inputs, targets, start_and_end, solutions = gen_dataset(num_mazes, (size+1) // 2)
-    unique, frequency = np.unique(targets, return_counts=True)
-    fig, ax = plt.subplots()
-    ax.hist(targets, bins=len(unique))
-    plt.savefig(f"historgram_of_labels{data_name}.pdf")
+    # unique, frequency = np.unique(targets, return_counts=True)
+    # fig, ax = plt.subplots()
+    # ax.hist(targets, bins=len(unique))
+    # plt.savefigig(f"historgram_of_labels{data_name}.pdf")
     if not os.path.isdir(f"{data_name}"):
         os.makedirs(f"{data_name}")
     inputs, solutions = inputs.transpose((0, 3, 1, 2)), solutions.transpose((0, 3, 1, 2))[:, 0]

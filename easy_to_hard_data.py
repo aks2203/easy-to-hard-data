@@ -15,7 +15,6 @@ from typing import Optional, Callable
 
 import numpy as np
 import torch
-from torch.utils.data import Dataset
 from tqdm import tqdm
 
 GBFACTOR = float(1 << 30)
@@ -69,10 +68,10 @@ def makedirs(path):
             raise e
 
 
-class ChessPuzzleDataset(Dataset):
+class ChessPuzzleDataset(torch.utils.data.Dataset):
     base_folder = "chess_data"
-    url = "https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/chess_data.tar.gz"
-
+    # url = "https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/chess_data.tar.gz"
+    url = "file:///Users/avi/Desktop/newmazes%20and%20newchess/chess_data.tar.gz"
     def __init__(self, root: str,
                  train: bool = True,
                  idx_start: int = None,
@@ -89,18 +88,18 @@ class ChessPuzzleDataset(Dataset):
         self.train = train
         if idx_start is None or idx_end is None:
             if train:
-                print("Training data using predetermined indices [0, 600000).")
+                print("Training data using pre-set indices [0, 600000).")
                 idx_start = 0
                 idx_end = 600000
             else:
-                print("Testing data using predetermined indices [600000, 700000).")
+                print("Testing data using pre-set indices [600000, 700000).")
                 idx_start = 600000
                 idx_end = 700000
         else:
             print(f"Custom data range using indices [{idx_start}, {idx_end}].")
 
         inputs_path = os.path.join(root, self.base_folder, "data.pth")
-        solutions_path = os.path.join(root, self.base_folder, "segment_targets.pth")
+        solutions_path = os.path.join(root, self.base_folder, "targets.pth")
         who_moves = os.path.join(root, self.base_folder, "who_moves.pth")
 
         self.puzzles = torch.load(inputs_path)[idx_start:idx_end]
@@ -132,7 +131,7 @@ class ChessPuzzleDataset(Dataset):
         os.unlink(path)
 
 
-class MazeDataset(Dataset):
+class MazeDataset(torch.utils.data.Dataset):
     """This is a dataset class for mazes.
     padding and cropping is done correctly within this class for small and large mazes.
     """
@@ -150,9 +149,11 @@ class MazeDataset(Dataset):
         self.transform = transform
 
         self.folder_name = f"maze_data_{'train' if self.train else 'test'}_{size}"
-        url = f"https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/" \
-              f"{self.folder_name}.tar.gz"
+        # url = f"https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/" \
+        #       f"{self.folder_name}.tar.gz"
 
+        url = "file:///Users/avi/Desktop/newmazes%20and%20newchess/" \
+              f"{self.folder_name}.tar.gz"
         if download:
             self.download(url)
 
@@ -196,7 +197,7 @@ class MazeDataset(Dataset):
         os.unlink(path)
 
 
-class PrefixSumDataset(Dataset):
+class PrefixSumDataset(torch.utils.data.Dataset):
     base_folder = "prefix_sums_data"
     url = "https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/prefix_sums_data.tar.gz"
     lengths = list(range(16, 65)) + [72] + [128] + [256] + [512]

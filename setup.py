@@ -19,13 +19,11 @@ setup(name="easy_to_hard_data",
       keywords=["pytorch", "generalization", "machine learning"],
       long_description=long_description,
       long_description_content_type="text/markdown",
-      py_modules=["easy_to_hard_data"],
+      py_modules=["easy_to_hard_data", "plot"],
       python_requires=">=3.7",
       install_requires=[
         "numpy>=1.18.5",
         "torch>=1.7.0",
         "torchvision>=0.8.2",
-        "tqdm>=4.60.0"
-     ],
-      license="MIT"
-)
+        "tqdm>=4.60.0"],
+      license="MIT")
