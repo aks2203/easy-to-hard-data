@@ -17,6 +17,8 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
+import plot
+
 GBFACTOR = float(1 << 30)
 
 

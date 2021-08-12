@@ -19,7 +19,7 @@ setup(name="easy_to_hard_data",
       keywords=["pytorch", "generalization", "machine learning"],
       long_description=long_description,
       long_description_content_type="text/markdown",
-      py_modules=["easy_to_hard_data", "plot"],
+      py_modules=["easy_to_hard_data"],
       python_requires=">=3.7",
       install_requires=[
         "numpy>=1.18.5",
