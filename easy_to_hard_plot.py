@@ -77,7 +77,6 @@ def plot_maze(inputs, targets, save_str):
     ax.set_xticks([])
 
     plt.tight_layout()
-    # plt.show()
     plt.savefig(save_str, bbox_inches="tight")
     plt.close()
 
@@ -111,7 +110,7 @@ def plot_chess_puzzle(inputs, targets, who_moves, save_str):
         fh.write(mysvg)
 
     drawing = svg2rlg(tmp_str)
-    renderPDF.drawToFile(drawing, f"input_{save_str}")
+    renderPDF.drawToFile(drawing, f"input_{save_str[:-4]}.pdf")
     os.remove(tmp_str)
 
 
@@ -120,11 +119,15 @@ def main():
     t = trans.RandomCrop(32, padding=8)
     mazes = MazeDataset("./data", transform=t)
     inputs, targets = mazes[0]
-    plot_maze(inputs, targets, "maze_example.pdf")
+    plot_maze(inputs, targets, "maze_example_15.png")
+
+    mazes = MazeDataset("./data", train=False, size=33)
+    inputs, targets = mazes[0]
+    plot_maze(inputs, targets, "maze_example_33.png")
 
     chess_puzzles = ChessPuzzleDataset("./data", idx_start=0, idx_end=4)
-    inputs, targets, who_moves = chess_puzzles[0]
-    plot_chess_puzzle(inputs, targets, who_moves, f"chess_example.pdf")
+    inputs, targets, who_moves = chess_puzzles[3]
+    plot_chess_puzzle(inputs, targets, who_moves, f"chess_example.png")
 
 
 if __name__ == "__main__":

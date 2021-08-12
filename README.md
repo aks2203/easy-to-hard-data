@@ -17,7 +17,7 @@ This package contains datasets desinged for use in studying easy to hard general
 
 2. Mazes
 
-- Visually solve a maze where the input is a three channel image, and the output is a binary segmentation mask separating pixels that is the same size as the input with ones at locations that are on the optimal path and zeros elsewhere.
+- Visually solve a maze where the input is a three channel image, and the output is a binary segmentation mask, which is the same size as the input, separating pixels, with ones at locations that are on the optimal path and zeros elsewhere.
 - We provide many size mazes (see below for details).
 
 3. Chess Puzzles
@@ -25,7 +25,7 @@ This package contains datasets desinged for use in studying easy to hard general
 - The difficulty is determined by the [Lichess](https://lichess.org/training) puzzle rating.
 - We sorted the chess puzzles provided by Lichess, and the first 600,000 easiest puzzles make up an easy training set. Testing can be done with any subset of puzzles with higher indices. The default test set uses indices 600,000 to 700,000.
 
-Note that in this repository there are two scripts to make data for prefix sums and for mazes. Also, we include plotting code for mazes and for chess puzzles.
+Note that in this repository there are scripts to make data for prefix sums and for mazes and a script to convert Lichess csv data into torch tensors. Also, we include plotting code for mazes and for chess puzzles.
 
 # Installation
 
@@ -36,6 +36,10 @@ This package can be installed with `pip` using the following command:
 Then, the datasets can be imported using 
 
 ```from easy_to_hard_data import PrefixSumDataset, MazeDataset, ChessPuzzleDataset```
+
+Also, plotting code can be accessed using
+
+```from easy_to_hard_plot import plot_chess_puzzle, plot_maze```
 
 This package can also be installed from source, by cloning the repository as follows.
 
@@ -65,11 +69,13 @@ The `root` argument must be provided and determines where the data is or to wher
 ## Mazes
 
 <p align='center'>
-  <img width='38%' src='https://aks2203.github.io/easy-to-hard-data/mazes_example_input.png'/>
-  <img width='40%' src='https://aks2203.github.io/easy-to-hard-data/mazes_example_target.png'/>
+  <img width='25%' src='https://aks2203.github.io/easy-to-hard-data/maze_example_15.png'/>
+</p>
+<p align='center'>
+  <img width='65%' src='https://aks2203.github.io/easy-to-hard-data/maze_example_33.png'/>
 </p>
 
-For sizes in {9, 11, 13, 15, 17} we have 50,000 training examples and 10,000 testing examples. For the larger sizes {19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 59}, we provide 1,000 testing mazes each. The `__init__` method has the following signature:
+For sizes in {9, 11, 13, 15, 17} we have 50,000 training examples and 10,000 testing examples. For the larger sizes {19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 59}, we provide 1,000 testing mazes each. The mazes shown above are examples of sizes 15 (top) and 33 (bottom). The `__init__` method has the following signature:
 
 ```
 MazeDataset(self, root: str, train: bool = True, size: int = 9, transform: Optional[Callable] = None, download: bool = True)
