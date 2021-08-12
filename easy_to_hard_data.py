@@ -17,10 +17,8 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-import plot
 
 GBFACTOR = float(1 << 30)
-
 
 def extract_zip(path, folder):
     file = tarfile.open(path)
