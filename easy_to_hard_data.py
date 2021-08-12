@@ -17,8 +17,8 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-
 GBFACTOR = float(1 << 30)
+
 
 def extract_zip(path, folder):
     file = tarfile.open(path)
@@ -70,8 +70,8 @@ def makedirs(path):
 
 class ChessPuzzleDataset(torch.utils.data.Dataset):
     base_folder = "chess_data"
-    # url = "https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/chess_data.tar.gz"
-    url = "file:///Users/avi/Desktop/newmazes%20and%20newchess/chess_data.tar.gz"
+    url = "https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/chess_data.tar.gz"
+
     def __init__(self, root: str,
                  train: bool = True,
                  idx_start: int = None,
@@ -149,11 +149,9 @@ class MazeDataset(torch.utils.data.Dataset):
         self.transform = transform
 
         self.folder_name = f"maze_data_{'train' if self.train else 'test'}_{size}"
-        # url = f"https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/" \
-        #       f"{self.folder_name}.tar.gz"
-
-        url = "file:///Users/avi/Desktop/newmazes%20and%20newchess/" \
+        url = f"https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/" \
               f"{self.folder_name}.tar.gz"
+
         if download:
             self.download(url)
 
