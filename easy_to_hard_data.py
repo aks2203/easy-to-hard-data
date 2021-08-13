@@ -1,23 +1,20 @@
-"""
-easy_to_hard_data.py
-Python package with datasets for studying generalization from
-    easy training data to hard test examples.
-Developed as part of easy-to-hard (github.com/aks2203/easy-to-hard).
-Avi Schwarzschild
-June 2021
+""" easy_to_hard_data.py
+    Python package with datasets for studying generalization from
+        easy training data to hard test examples.
+    Developed as part of easy-to-hard (github.com/aks2203/easy-to-hard).
+    Avi Schwarzschild
+    June 2021
 """
 
 import errno
 import os
 import os.path
-import random
 import tarfile
 import urllib.request as ur
+from typing import Optional, Callable
 
 import numpy as np
 import torch
-from torch.utils.data import Dataset
-from torchvision import transforms as transforms
 from tqdm import tqdm
 
 GBFACTOR = float(1 << 30)
@@ -71,17 +68,19 @@ def makedirs(path):
             raise e
 
 
-class ChessPuzzleDataset(Dataset):
+class ChessPuzzleDataset(torch.utils.data.Dataset):
     base_folder = "chess_data"
-    url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/chess_data.tar.gz"
+    url = "https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/chess_data.tar.gz"
 
     def __init__(self, root: str,
                  train: bool = True,
                  idx_start: int = None,
                  idx_end: int = None,
+                 who_moves: bool = True,
                  download: bool = True):
 
         self.root = root
+        self.ret_who_moves = who_moves
 
         if download:
             self.download()
@@ -89,26 +88,29 @@ class ChessPuzzleDataset(Dataset):
         self.train = train
         if idx_start is None or idx_end is None:
             if train:
-                print("Training data using predetermined indices [0, 600000).")
+                print("Training data using pre-set indices [0, 600000).")
                 idx_start = 0
                 idx_end = 600000
             else:
-                print("Testing data using predetermined indices [600000, 700000).")
+                print("Testing data using pre-set indices [600000, 700000).")
                 idx_start = 600000
                 idx_end = 700000
         else:
             print(f"Custom data range using indices [{idx_start}, {idx_end}].")
 
         inputs_path = os.path.join(root, self.base_folder, "data.pth")
-        solutions_path = os.path.join(root, self.base_folder, "segment_targets.pth")
+        solutions_path = os.path.join(root, self.base_folder, "targets.pth")
         who_moves = os.path.join(root, self.base_folder, "who_moves.pth")
 
         self.puzzles = torch.load(inputs_path)[idx_start:idx_end]
-        self.targets = torch.load(solutions_path)[idx_start:idx_end]
+        self.targets = torch.load(solutions_path)[idx_start:idx_end].flip(1)
         self.who_moves = torch.load(who_moves)[idx_start:idx_end]
 
     def __getitem__(self, index):
-        return self.puzzles[index], self.targets[index], self.who_moves[index]
+        if self.ret_who_moves:
+            return self.puzzles[index], self.targets[index], self.who_moves[index]
+        else:
+            return self.puzzles[index], self.targets[index]
 
     def __len__(self):
         return self.puzzles.size(0)
@@ -129,72 +131,75 @@ class ChessPuzzleDataset(Dataset):
         os.unlink(path)
 
 
-class MazeDataset(Dataset):
+class MazeDataset(torch.utils.data.Dataset):
     """This is a dataset class for mazes.
     padding and cropping is done correctly within this class for small and large mazes.
     """
-    base_folder = "maze_data"
-    url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/maze_data.tar.gz"
-    download_list = ["test_large", "test_small", "train_large", "train_small"]
 
-    def __init__(self, root: str,
+    def __init__(self,
+                 root: str,
                  train: bool = True,
-                 small: bool = True,
+                 size: int = 9,
+                 transform: Optional[Callable] = None,
                  download: bool = True):
 
-        self.train = train
-        self.small = small
         self.root = root
+        self.train = train
+        self.size = size
+        self.transform = transform
+
+        self.folder_name = f"maze_data_{'train' if self.train else 'test'}_{size}"
+        url = f"https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/" \
+              f"{self.folder_name}.tar.gz"
 
         if download:
-            self.download()
+            self.download(url)
 
-        folder_name = self.download_list[int(self.small) + 2 * int(self.train)]
+        print(f"Loading mazes of size {size} x {size}.")
 
-        inputs_path = os.path.join(root, self.base_folder, folder_name, "inputs.npy")
-        solutions_path = os.path.join(root, self.base_folder, folder_name, "solutions.npy")
+        inputs_path = os.path.join(root, self.folder_name, "inputs.npy")
+        solutions_path = os.path.join(root, self.folder_name, "solutions.npy")
         inputs_np = np.load(inputs_path)
         targets_np = np.load(solutions_path)
 
-        self.inputs = torch.from_numpy(inputs_np).float().permute(0, 3, 1, 2)
-        self.targets = torch.from_numpy(targets_np).permute(0, 3, 1, 2)
-
-        self.padding = 4 if small else 0
-        self.pad = transforms.Pad(self.padding)
+        self.inputs = torch.from_numpy(inputs_np).float()
+        self.targets = torch.from_numpy(targets_np).long()
 
     def __getitem__(self, index):
-        x = self.pad(self.inputs[index])
-        y = self.pad(self.targets[index])
-        i = random.randint(0, 2*self.padding)
-        j = random.randint(0, 2*self.padding)
+        img, target = self.inputs[index], self.targets[index]
 
-        return x[:, i:i+32, j:j+32], y[:, i:i+32, j:j+32]
+        if self.transform is not None:
+            stacked = torch.cat([img, target.unsqueeze(0)], dim=0)
+            stacked = self.transform(stacked)
+            img = stacked[:3].float()
+            target = stacked[3].long()
+
+        return img, target
 
     def __len__(self):
         return self.inputs.size(0)
 
     def _check_integrity(self) -> bool:
         root = self.root
-        for fentry in self.download_list:
-            fpath = os.path.join(root, self.base_folder, fentry)
-            if not os.path.exists(fpath):
-                return False
+        fpath = os.path.join(root, self.folder_name)
+        if not os.path.exists(fpath):
+            return False
         return True
 
-    def download(self) -> None:
+    def download(self, url) -> None:
         if self._check_integrity():
             print('Files already downloaded and verified')
             return
-        path = download_url(self.url, self.root)
+        path = download_url(url, self.root)
         extract_zip(path, self.root)
         os.unlink(path)
 
 
-class PrefixSumDataset(Dataset):
+class PrefixSumDataset(torch.utils.data.Dataset):
     base_folder = "prefix_sums_data"
-    url = "https://www.cs.umd.edu/~tomg/download/Easy_to_Hard_Data/prefix_sums_data.tar.gz"
-    lengths = [12, 14] + list(range(16, 65)) + [72] + [128]
-    download_list = [f"len_{l}" for l in lengths]
+    url = "https://cs.umd.edu/~tomg/download/Easy_to_Hard_Datav2/prefix_sums_data.tar.gz"
+    lengths = list(range(16, 65)) + [72] + [128] + [256] + [512]
+    download_list = [f"{l}_data.pth" for l in lengths] + [f"{l}_targets.pth" for l in lengths]
 
     def __init__(self, root: str, num_bits: int = 32, download: bool = True):
 
@@ -205,9 +210,8 @@ class PrefixSumDataset(Dataset):
 
         print(f"Loading data with {num_bits} bits.")
 
-        folder_name = f"len_{num_bits}"
-        inputs_path = os.path.join(root, self.base_folder, folder_name, f"{num_bits}_data.pth")
-        targets_path = os.path.join(root, self.base_folder, folder_name, f"{num_bits}_targets.pth")
+        inputs_path = os.path.join(root, self.base_folder, f"{num_bits}_data.pth")
+        targets_path = os.path.join(root, self.base_folder, f"{num_bits}_targets.pth")
         self.inputs = torch.load(inputs_path).unsqueeze(1) - 0.5
         self.targets = torch.load(targets_path).long()
 
