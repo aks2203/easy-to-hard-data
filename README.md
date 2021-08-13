@@ -104,6 +104,8 @@ ChessPuzzleDataset(root: str, train: bool = True, idx_start: int = None, idx_end
 
 The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `idx_start` and `idx_end` aruments are an alternative to `train` and can be used to manually choose the indices in the sorted data to use. The `who_moves` argument returns a boolean, where True indicates that black moves next, and False indicates that white moves next. Finally, the `download` argument sets whether to download the data.
 
+The automatic download will also retrieve a file containing the rating of each chess puzzle. This file is not used by any of the functions/methods in this code, but it is available to be read/used by anyone interested. The indices match the other tensors downloaded.
+
 ## Example
 
 To make two prefix-sum dataloaders, one with training (32 bits) and one with testing (40 bits) data, we provide the following example.
