@@ -7,7 +7,7 @@ Pytorch datasets for our [Easy-To-Hard](http://github.com/aks2203/easy-to-hard) 
 
 ## Overview
 
-This package contains datasets desinged for use in studying easy to hard generalization. That is, the training data constits of easy examples, and the testing data has harder ones. The datsets are as follows.
+This package contains datasets desinged for use in studying easy to hard generalization. That is, the training data consists of easy examples, and the testing data has harder ones. The datsets are as follows.
 
 1. Prefix Sums
 
