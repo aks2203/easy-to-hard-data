@@ -49,8 +49,14 @@ cd easy-to-hard-data
 pip install -e .
 ```
 
+# Release Notes
+
+Last major release: v1.0.0 (August 2021). The latest version includes major changes to both the raw data files and to the signatures of the dataset class constructors. The old version is still usable, and the automatic downloads will pull the appropriate version of the data.
+
+The changes to the data include new mazes generated with a technique that guarentees unique solutions. Also, the data generation and plotting scripts have been added. Lastly, it is important to note the changes to the constructor signatures, as they have been improved.
+
 # Usage
-The intended use for this package is to provide easy to use and ready to download datasets in PyTorch for those interested in studying generalization from easy to hard problems. Each of the datasets has options detailed below.
+The intended use for this package is to provide easy-to-use and ready-to-download datasets in PyTorch for those interested in studying generalization from easy to hard problems. Each of the datasets has options detailed below.
 
 ## Prefix Sums
 
