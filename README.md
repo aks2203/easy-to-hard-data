@@ -4,6 +4,7 @@ This repository houses Pytorch datasets for our [Easy-To-Hard](http://github.com
 
 [![PyPI](https://img.shields.io/pypi/v/easy-to-hard-data)](https://pypi.org/project/easy-to-hard-data/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aks2203/easy-to-hard-data/blob/main/LICENSE)
+[![Downloads](https://static.pepy.tech/personalized-badge/easy-to-hard-data?period=month&units=international_system&left_color=blue&right_color=brightgreen&left_text=Downloads)](https://pepy.tech/project/easy-to-hard-data)
 
 ## Overview
 
