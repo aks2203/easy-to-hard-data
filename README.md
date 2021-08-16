@@ -1,5 +1,5 @@
 # Easy-To-Hard Datasets
-Pytorch datasets for our [Easy-To-Hard](http://github.com/aks2203/easy-to-hard) project.
+This repository houses Pytorch datasets for our [Easy-To-Hard](http://github.com/aks2203/easy-to-hard) project and a short paper describing these datasets [here](https://arxiv.org/abs/2108.06011).
 
 
 [![PyPI](https://img.shields.io/pypi/v/easy-to-hard-data)](https://pypi.org/project/easy-to-hard-data/)
@@ -129,12 +129,14 @@ If you have improvements or find bugs, feel free to open issues.
 
 If you find this code helpful and use these datasets, please consider citing our work.
 
+The datasets are descried in [Datasets for Studying Generalization from Easy to Hard Examples](https://arxiv.org/abs/2108.06011)
+
 ```
-@misc{schwarzschild2021learn,
-      title={Can You Learn an Algorithm? Generalizing from Easy to Hard Problems with Recurrent Networks}, 
-      author={Avi Schwarzschild and Eitan Borgnia and Arjun Gupta and Furong Huang and Uzi Vishkin and Micah Goldblum and Tom Goldstein},
+@misc{schwarzschild2021datasets,
+      title={Datasets for Studying Generalization from Easy to Hard Examples}, 
+      author={Avi Schwarzschild and Eitan Borgnia and Arjun Gupta and Arpit Bansal and Zeyad Emam and Furong Huang and Micah Goldblum and Tom Goldstein},
       year={2021},
-      eprint={2106.04537},
+      eprint={2108.06011},
       archivePrefix={arXiv},
       primaryClass={cs.LG}
 }
