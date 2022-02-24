@@ -62,7 +62,7 @@ The intended use for this package is to provide easy-to-use and ready-to-downloa
 ## Prefix Sums
 
 <p align='center'>
-  <img width='70%' src='img/prefix_sum_example.png'/>
+  <img width='70%' src='https://github.com/aks2203/easy-to-hard-data/blob/main/img/prefix_sum_example.png'/>
 </p>
 
 For each sequence length, we provide a set of 10,000 input/output pairs. The `__init__` method has the following signature:
@@ -76,10 +76,10 @@ The `root` argument must be provided and determines where the data is or to wher
 ## Mazes
 
 <p align='center'>
-  <img width='25%' src='img/maze_example_15.png'/>
+  <img width='25%' src='https://github.com/aks2203/easy-to-hard-data/blob/main/img/maze_example_15.png'/>
 </p>
 <p align='center'>
-  <img width='65%' src='img/maze_example_33.png'/>
+  <img width='65%' src='https://github.com/aks2203/easy-to-hard-data/blob/main/img/maze_example_33.png'/>
 </p>
 
 For sizes in {9, 11, 13, 15, 17} we have 50,000 training examples and 10,000 testing examples. For the larger sizes {19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 59}, we provide 1,000 testing mazes each. The mazes shown above are examples of sizes 15 (top) and 33 (bottom). The `__init__` method has the following signature:
@@ -93,8 +93,8 @@ The `root` argument must be provided and determines where the data is or to wher
 ## Chess Puzzles
 
 <p align='center'>
-  <img width='40%' src='img/chess_input_example.png'/>
-  <img width='40%' src='img/chess_target_example.png'/>
+  <img width='40%' src='https://github.com/aks2203/easy-to-hard-data/blob/main/img/chess_input_example.png'/>
+  <img width='40%' src='https://github.com/aks2203/easy-to-hard-data/blob/main/img/chess_target_example.png'/>
 </p>
 
 We compiled a dataset from Lichess's puzzles database. We provide a set of about 1.5M input/output pairs sorted by dificulty rating. The `__init__` method has the following signature:
