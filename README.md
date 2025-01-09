@@ -130,7 +130,7 @@ If you have improvements or find bugs, feel free to open issues.
 
 If you find this code helpful and use these datasets, please consider citing our work.
 
-The datasets are descried in [Datasets for Studying Generalization from Easy to Hard Examples](https://arxiv.org/abs/2108.06011)
+The datasets are described in [Datasets for Studying Generalization from Easy to Hard Examples](https://arxiv.org/abs/2108.06011)
 
 ```
 @misc{schwarzschild2021datasets,
